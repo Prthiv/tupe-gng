@@ -13,26 +13,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Step 2: Set up Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.4'
 
+      # Step 3: Run Flutter Doctor
       - name: Flutter Doctor
         run: flutter doctor -v
 
+      # Step 4: Install Dependencies
       - name: Install Dependencies
         run: flutter pub get
 
+      # Step 5: Clean Flutter Project
       - name: Clean Flutter Project
         run: flutter clean
 
+      # Step 6: Build APK
       - name: Build APK
         run: flutter build apk --release
 
+      # Step 7: Upload APK Artifact
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
