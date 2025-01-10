@@ -1,27 +1,37 @@
-name: Build Flutter APK
+name: Flutter Build APK
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.4'
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: "stable" # Use the stable Flutter channel
 
-      - name: Install Dependencies
-        run: flutter pub get
+    - name: Debug Flutter Environment
+      run: flutter doctor -v
 
-      - name: Build APK
-        run: flutter build apk --release
+    - name: Install Dependencies
+      run: flutter pub get
+
+    - name: Clean Project
+      run: flutter clean
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Upload APK to Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
